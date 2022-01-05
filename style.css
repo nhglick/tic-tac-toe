@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.body-container {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.player-turn p {
+    font-size: 32px;
+    margin: 0;
+    margin-top: 1em;
+    position: fixed;
+    left: 5%;
+}
+
+.inactive {
+    display: none;
+}
+
+.board-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background-color: black;
+    gap: 5px;
+    margin-top: 1em;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.module {
+    background-color: white;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: auto;
+}
+
+.module p {
+    font-size: 64px;
+    padding: 0;
+    margin: 0;
+}
+
+.winning {
+    background-color: rgb(191, 255, 191);
+}
