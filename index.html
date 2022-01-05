@@ -12,10 +12,29 @@
 </head>
 
 <body>
+    <div id="start-modal" class="modal">
+        <div class="modal-content">
+            <form>
+                <h2>Set your names</h2>
+                <input type="text" placeholder="Player 1's Name" id="player-1-name">
+                <input type="text" placeholder="Player 2's Name" id="player-2-name">
+                
+                <button id="submit" type="button">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="done-modal" class="modal" style="display: none">
+        <div class="modal-content">
+                <h2 id="winner"></h2>
+                <button id="restart" type="button">Restart</button>
+        </div>
+    </div>
+
     <div class="body-container">
         <div class="player-turn">
-            <p id="player-1-display"><em>Player 1's Turn</em></p>
-            <p id="player-2-display" class="inactive"><em>Player 2's Turn</em></p>
+            <p id="player-1-display"><em></em></p>
+            <p id="player-2-display" class="inactive"><em></em></p>
         </div>
         <div class="board-container"></div>    
     </div>

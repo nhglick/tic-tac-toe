@@ -1,3 +1,5 @@
+const doneModal = document.querySelector('#done-modal');
+const playerNames = [];
 let userTurn = 1;
 
 const module = () => {
@@ -46,14 +48,27 @@ const module = () => {
 
 const board = (() => {
     const containerDiv = document.querySelector('.board-container');
-    const moduleArray = [];
 
+    let winningSymbol = '';
+    
     let winningModules = [];
+    let moduleArray = [];
 
-    for (let i = 0; i < 9; i ++) {
-        moduleArray.push(module());
-        containerDiv.appendChild(moduleArray[i].getAssociatedDiv());
+    const deleteBoard = () => {
+        const allDivs = Array.from(document.querySelectorAll('.board-container > .module'));
+        for (const div of allDivs) 
+            div.remove();
+
+        moduleArray = [];
     }
+
+    const createBoard = () => {
+        for (let i = 0; i < 9; i ++) {
+            moduleArray.push(module());
+            containerDiv.appendChild(moduleArray[i].getAssociatedDiv());
+        }
+    };
+
 
     const winningEdits = () => {
         for (eachModule of winningModules)
@@ -62,6 +77,7 @@ const board = (() => {
         for (eachModule of moduleArray)
             eachModule.setEditable(false);
     };
+
 
     const checkIfWin = () => {
         // check vertical win
@@ -72,6 +88,7 @@ const board = (() => {
             if (moduleArray[i].getValue() === moduleArray[i+3].getValue())
                 if (moduleArray[i+3].getValue() === moduleArray[i+6].getValue()) {
                     winningModules = [moduleArray[i], moduleArray[i+3], moduleArray[i+6]];
+                    winningSymbol = moduleArray[i].getValue();
                     return true;
                 }
         }
@@ -84,6 +101,7 @@ const board = (() => {
             if (moduleArray[i].getValue() === moduleArray[i+1].getValue())
                 if (moduleArray[i+1].getValue() === moduleArray[i+2].getValue()) {
                     winningModules = [moduleArray[i], moduleArray[i+1], moduleArray[i+2]];
+                    winningSymbol = moduleArray[i].getValue();
                     return true;
                 }
         }
@@ -93,6 +111,7 @@ const board = (() => {
             if (moduleArray[0].getValue() === moduleArray[4].getValue())
                 if (moduleArray[4].getValue() === moduleArray[8].getValue()) {
                     winningModules = [moduleArray[0], moduleArray[4], moduleArray[8]];
+                    winningSymbol = moduleArray[0].getValue();
                     return true;
                 }
 
@@ -100,22 +119,58 @@ const board = (() => {
             if (moduleArray[6].getValue() === moduleArray[4].getValue())
                 if (moduleArray[4].getValue() === moduleArray[2].getValue()) {
                     winningModules = [moduleArray[6], moduleArray[4], moduleArray[2]];
+                    winningSymbol = moduleArray[6].getValue();
                     return true;
                 }
 
         return false;
     };
 
+    const getWinningSymbol = () => winningSymbol;
+
     return {
         moduleArray,
-        winningModules,
+        getWinningSymbol,
         checkIfWin,
-        winningEdits
+        winningEdits,
+        deleteBoard, 
+        createBoard
     };
 })();
 
 
 window.addEventListener('click', () => {
-    if (board.checkIfWin())
+    if (board.checkIfWin()) {
+        let winningPlayer;
         board.winningEdits();
+
+        doneModal.style.display = 'block';
+        board.getWinningSymbol() === 'X' ? winningPlayer = 1 : winningPlayer = 2;
+
+        if (winningPlayer === 1)
+            doneModal.querySelector('.modal-content > #winner').textContent = `Winner: ${playerNames[0]}`;
+        else
+            doneModal.querySelector('.modal-content > #winner').textContent = `Winner: ${playerNames[1]}`;
+    }
+});
+
+
+submitButton = document.querySelector('#submit');
+submitButton.addEventListener('click', () => {
+    playerNames.push(document.querySelector('#player-1-name').value);
+    playerNames.push(document.querySelector('#player-2-name').value);
+
+    document.querySelector("#player-1-display > em").textContent = `${playerNames[0]}'s turn`;
+    document.querySelector("#player-2-display > em").textContent = `${playerNames[1]}'s turn`;
+
+    document.querySelector('#start-modal').style.display = 'none';
+    board.createBoard();
+});
+
+
+restartButton = document.querySelector('#restart');
+restartButton.addEventListener('click', () => {
+    board.deleteBoard();
+    board.createBoard();
+    doneModal.style.display = 'none';
 });
