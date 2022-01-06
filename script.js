@@ -79,6 +79,15 @@ const board = (() => {
     };
 
 
+    const anyNull = () => {
+        for (eachModule of moduleArray)
+            if (eachModule.getValue() === '')
+                return true;
+
+        return false;
+    };
+
+
     const checkIfWin = () => {
         // check vertical win
         for (let i = 0; i < 3; i ++) {
@@ -93,18 +102,20 @@ const board = (() => {
                 }
         }
 
+
         // check horizontal win
         for (let i = 0; i < 7; i += 3) {
             if (moduleArray[i].getValue() === '')
                 continue;
                 
-            if (moduleArray[i].getValue() === moduleArray[i+1].getValue())
+            else if (moduleArray[i].getValue() === moduleArray[i+1].getValue())
                 if (moduleArray[i+1].getValue() === moduleArray[i+2].getValue()) {
                     winningModules = [moduleArray[i], moduleArray[i+1], moduleArray[i+2]];
                     winningSymbol = moduleArray[i].getValue();
                     return true;
                 }
         }
+
 
         // check diagonal wins
         if (moduleArray[0].getValue() !== '')
@@ -115,21 +126,22 @@ const board = (() => {
                     return true;
                 }
 
-        if (moduleArray[6].getValue() !== '')    
-            if (moduleArray[6].getValue() === moduleArray[4].getValue())
-                if (moduleArray[4].getValue() === moduleArray[2].getValue()) {
-                    winningModules = [moduleArray[6], moduleArray[4], moduleArray[2]];
-                    winningSymbol = moduleArray[6].getValue();
+        else if (moduleArray[2].getValue() !== '')    
+            if (moduleArray[2].getValue() === moduleArray[4].getValue())
+                if (moduleArray[4].getValue() === moduleArray[6].getValue()) {
+                    winningModules = [moduleArray[2], moduleArray[4], moduleArray[6]];
+                    winningSymbol = moduleArray[2].getValue();
                     return true;
                 }
 
+        // fallback
         return false;
     };
 
     const getWinningSymbol = () => winningSymbol;
 
     return {
-        moduleArray,
+        anyNull,
         getWinningSymbol,
         checkIfWin,
         winningEdits,
@@ -151,6 +163,11 @@ window.addEventListener('click', () => {
             doneModal.querySelector('.modal-content > #winner').textContent = `Winner: ${playerNames[0]}`;
         else
             doneModal.querySelector('.modal-content > #winner').textContent = `Winner: ${playerNames[1]}`;
+    }
+
+    if (!board.checkIfWin() && !board.anyNull()) {
+        doneModal.style.display = 'block';
+        doneModal.querySelector('.modal-content > #winner').textContent = "It's a tie!";
     }
 });
 
