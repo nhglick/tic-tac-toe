@@ -126,7 +126,7 @@ const board = (() => {
                     return true;
                 }
 
-        else if (moduleArray[2].getValue() !== '')    
+        if (moduleArray[2].getValue() !== '')    
             if (moduleArray[2].getValue() === moduleArray[4].getValue())
                 if (moduleArray[4].getValue() === moduleArray[6].getValue()) {
                     winningModules = [moduleArray[2], moduleArray[4], moduleArray[6]];
