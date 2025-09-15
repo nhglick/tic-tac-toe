@@ -3,3 +3,5 @@
 Simple tic tac toe game with name input and ability to retstart game. The goal of this project was to practice using factory functions and closure to gain experience working with private variables and functions in javascript.
 
 live preview: https://nhglick.github.io/tic-tac-toe/
+
+Completed as part of the odin project
